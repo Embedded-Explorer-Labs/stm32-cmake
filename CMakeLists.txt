@@ -17,6 +17,7 @@ add_library(stm32_hal OBJECT
     "${DEVICE}/Source/Templates/system_stm32l4xx.c"
     "${DRIVERS}/Src/stm32l4xx_hal.c"
     "${DRIVERS}/Src/stm32l4xx_hal_cortex.c"
+    "${DRIVERS}/Src/stm32l4xx_hal_gpio.c"
 )
 target_include_directories(stm32_hal PUBLIC
     "${CMAKE_CURRENT_SOURCE_DIR}"
