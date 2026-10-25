@@ -20,11 +20,34 @@ SECTIONS
     {
         *(.text*)
         *(.rodata*)
+        KEEP(*(.init))
+        KEEP(*(.fini))
         . = ALIGN(4);
     } > FLASH
 
     .ARM.extab : { *(.ARM.extab*) } > FLASH
     .ARM.exidx : { *(.ARM.exidx*) } > FLASH
+
+    .preinit_array :
+    {
+        PROVIDE_HIDDEN(__preinit_array_start = .);
+        KEEP(*(.preinit_array*))
+        PROVIDE_HIDDEN(__preinit_array_end = .);
+    } > FLASH
+    .init_array :
+    {
+        PROVIDE_HIDDEN(__init_array_start = .);
+        KEEP(*(SORT(.init_array.*)))
+        KEEP(*(.init_array*))
+        PROVIDE_HIDDEN(__init_array_end = .);
+    } > FLASH
+    .fini_array :
+    {
+        PROVIDE_HIDDEN(__fini_array_start = .);
+        KEEP(*(SORT(.fini_array.*)))
+        KEEP(*(.fini_array*))
+        PROVIDE_HIDDEN(__fini_array_end = .);
+    } > FLASH
 
     .data :
     {
@@ -47,5 +70,5 @@ SECTIONS
     } > RAM
 }
 
-/* Leave at least 1 KiB of RAM for the descending stack. */
+/* Reserve at least 1 KiB above the data for the descending stack. */
 ASSERT(_ebss + 0x400 <= _estack, "RAM overflow: no room for stack")

@@ -1,9 +1,16 @@
-volatile unsigned int initialized_counter = 7;
-volatile unsigned int zero_counter;
+#include "stm32l4xx_hal.h"
+
+void SysTick_Handler(void)
+{
+    HAL_IncTick();
+}
 
 int main(void)
 {
-    zero_counter = initialized_counter;
+    if (HAL_Init() != HAL_OK) {
+        while (1) {
+        }
+    }
 
     while (1) {
     }
